@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UDP_APP", "UDP_APP\UDP_APP.csproj", "{DFF9E041-B9B5-4059-B66E-2AB9F3B1BF51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CAARF_TESTE", "CAARF_TESTE\CAARF_TESTE.csproj", "{08B927E9-F45E-4095-90AA-F55570A23B7D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFF9E041-B9B5-4059-B66E-2AB9F3B1BF51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFF9E041-B9B5-4059-B66E-2AB9F3B1BF51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFF9E041-B9B5-4059-B66E-2AB9F3B1BF51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFF9E041-B9B5-4059-B66E-2AB9F3B1BF51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08B927E9-F45E-4095-90AA-F55570A23B7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08B927E9-F45E-4095-90AA-F55570A23B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08B927E9-F45E-4095-90AA-F55570A23B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08B927E9-F45E-4095-90AA-F55570A23B7D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D20C2D89-C47A-4111-AFF0-7DFBB2C191B7}
+	EndGlobalSection
+EndGlobal
