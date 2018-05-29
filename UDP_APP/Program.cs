@@ -10,7 +10,7 @@ namespace UDP_APP
     {
         private static string randomPayload(int size)
         {
-            //Cria string que será utilizada como payload pelo agente.
+            //Cria string que será utilizada como payload pelo agente
             StringBuilder builder = new StringBuilder();
             char ch= '#';
             for (int i = 0; i < size; i++)
@@ -21,7 +21,7 @@ namespace UDP_APP
             return builder.ToString();
         }
 
-        static void handleUDP1(IPEndPoint remoteAgent, int size, int pNumber) 
+        static void handleUDP1(IPEndPoint remoteAgent, int size, int pNumber, string CAARFIP, string CAARFPort, UdpClient agent) 
         {
             //Envia mensagem AGENT_UDP1 
             string payload;
@@ -100,12 +100,13 @@ namespace UDP_APP
             }
             R = R - (LOSS * 2.5);
             MOS = 1 + 0.035 * R + 0.000007 * R * (R - 60) * (100 - R);
-            
-            
+
+
             //TODO: CAARF_RESPONSE
-            //payload = "CAARF_RESPONSE" + "|" + R + "|" + MOS;
-            //wirepayload = Encoding.ASCII.GetBytes(payload);
-            //agent.Send(wirepayload, wirepayload.Length, remote);
+            IPEndPoint CAARF = new IPEndPoint(IPAddress.Parse(CAARFIP), Int32.Parse(CAARFPort));
+            payload = "CAARF_RESPONSE" + "|" + R + "|" + MOS;
+            wirepayload = Encoding.ASCII.GetBytes(payload);
+            agent.Send(wirepayload, wirepayload.Length, CAARF);
 
             //CONSOLE OUTPUT
             for (int i = 0; i < pNumber; i++)
@@ -123,19 +124,22 @@ namespace UDP_APP
         }
 
 
-        static void sendSIGNAL1(IPEndPoint remote, UdpClient agent, int size, int qtd)
+        static void sendSIGNAL1(IPEndPoint remote, UdpClient agent, int size, int qtd, IPEndPoint CAARF)
         {
             //Envia mensagem AGENT_SIGNAL1
-            string payload = "AGENT_SIGNAL1|" + size + "|"+ qtd;
+
+            //string payload = "AGENT_SIGNAL1|" + size + "|"+ qtd;
+            string payload = "AGENT_SIGNAL1|" + size + "|" + qtd + "|" + CAARF.Address.ToString() + "|" + CAARF.Port.ToString();
             byte[] wirepayload = Encoding.ASCII.GetBytes(payload);
             agent.Send(wirepayload, wirepayload.Length, remote);
 
         }
 
-        static void sendSIGNAL2(IPEndPoint remote, UdpClient agent, int size, int qtd)
+        static void sendSIGNAL2(IPEndPoint remote, UdpClient agent, int size, int qtd, string CAARFIP, string CAARFPort)
         {
             //Envia mensagem AGENT_SIGNAL2
-            string payload = "AGENT_SIGNAL2|" + size + "|" + qtd;
+            //string payload = "AGENT_SIGNAL2|" + size + "|" + qtd;
+            string payload = "AGENT_SIGNAL2|" + size + "|" + qtd + "|" + CAARFIP + "|" + CAARFPort;
             byte[] wirepayload = Encoding.ASCII.GetBytes(payload);
             agent.Send(wirepayload, wirepayload.Length, remote);
         }
@@ -249,22 +253,24 @@ namespace UDP_APP
                             //Caso receba receba uma mensagem de requisição de QOE - CAARF_REQUEST
                             Console.WriteLine("{1} - RECEBEU REQUISICAO: {0} - {2} pacotes - {3} bytes...", remoteIPEndPoint, DateTime.Now, payloadMessage[4], payloadMessage[3]);
                             //Console.WriteLine("AGENTE_1: {0} AGENTE_2: {1}", )
+
                             IPEndPoint remote = new IPEndPoint(IPAddress.Parse(payloadMessage[1]),Int32.Parse(payloadMessage[2]));
                             size = Int32.Parse(payloadMessage[3]);
                             qtd = Int32.Parse(payloadMessage[4]);
-                            sendSIGNAL1(remote, agent, size, qtd);
+                            sendSIGNAL1(remote, agent, size, qtd, remoteIPEndPoint);
                             break;
                         case "AGENT_SIGNAL1":
                             //Caso receba uma mensagem de sinal - AGENT_SIGNAL1
                             size = Int32.Parse(payloadMessage[1]);
                             qtd = Int32.Parse(payloadMessage[2]);
-                            sendSIGNAL2(remoteIPEndPoint, agent, size, qtd);
+                            sendSIGNAL2(remoteIPEndPoint, agent, size, qtd, payloadMessage[3], payloadMessage[4]);
                             break;
                         case "AGENT_SIGNAL2":
                             //Caso receba uma mensagem de sinal - AGENT_SIGNAL2 - Enviar/Receber pacotes AGENT_UDP1
                             size = Int32.Parse(payloadMessage[1]);
                             qtd = Int32.Parse(payloadMessage[2]);
-                            handleUDP1(remoteIPEndPoint, size, qtd);
+
+                            handleUDP1(remoteIPEndPoint, size, qtd, payloadMessage[3], payloadMessage[4], agent);
                             break;
                         case "AGENTE_UDP1":
                             //Caso receba mensagem AGENT_UDP1 - Devolve o pacote ao agente remoto

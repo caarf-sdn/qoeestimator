@@ -30,6 +30,12 @@ namespace CAARF_TESTE
                 string payload = "CAARF_REQUEST|" + textBox2.Text + "|" + textBox4.Text + "|" + textBox6.Text + "|" + textBox5.Text;
                 byte[] wirepayload = Encoding.ASCII.GetBytes(payload);
                 CAARF.Send(wirepayload, wirepayload.Length, remoteAgent);
+
+                wirepayload = CAARF.Receive(ref remoteAgent);
+                payload = Encoding.ASCII.GetString(wirepayload, 0, wirepayload.Length);
+                string[] payloadMessage = payload.Split('|');
+
+                textBoxTeste.Text = "RESPOSTA-> R:" + payloadMessage[1] + "\t MOS:" + payloadMessage[2] + "\n\r";
             }
             catch (Exception)
             {
@@ -55,7 +61,7 @@ namespace CAARF_TESTE
                 payload = Encoding.ASCII.GetString(wirepayload, 0, wirepayload.Length);
                 string[] payloadMessage = payload.Split(delimiter);
 
-                textBoxTeste.Text = "TESTE-> R-Factor= " + payloadMessage[0] + "\t" + "MOS= " + payloadMessage[1] + "\n\r";
+                textBoxTeste.Text = "TESTE-> R-Factor:" + payloadMessage[0] + "\t MOS:" + payloadMessage[1] + "\n\r";
                 // textBoxTeste.Text = payloadMessage[1] + Environment.NewLine;
 
             }
