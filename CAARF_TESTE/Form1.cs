@@ -31,16 +31,16 @@ namespace CAARF_TESTE
                 byte[] wirepayload = Encoding.ASCII.GetBytes(payload);
                 CAARF.Send(wirepayload, wirepayload.Length, remoteAgent);
 
+                CAARF.Client.ReceiveTimeout = 5000;
                 wirepayload = CAARF.Receive(ref remoteAgent);
                 payload = Encoding.ASCII.GetString(wirepayload, 0, wirepayload.Length);
                 string[] payloadMessage = payload.Split('|');
 
-                textBoxTeste.Text = "RESPOSTA-> R:" + payloadMessage[1] + "\t MOS:" + payloadMessage[2] + "\n\r";
+                textBoxTeste.AppendText("RESPOSTA-> R:" + payloadMessage[1] + "\t MOS:" + payloadMessage[2] + "\n");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                textBoxTeste.Text= ex.Message ;
             }
 
         }
@@ -52,23 +52,20 @@ namespace CAARF_TESTE
                 UdpClient CAARF = new UdpClient();
                 IPEndPoint remoteAgent = new IPEndPoint(IPAddress.Parse(textBox1.Text), Int32.Parse(textBox3.Text));
                 char delimiter = '|';
-                string payload = "TESTE|" + textBoxAL.Text + "|" + textBoxJITTER.Text + "|" + textBoxLOSS.Text;
+                string payload = "AGENT_TEST|" + textBoxAL.Text + "|" + textBoxJITTER.Text + "|" + textBoxLOSS.Text;
                 byte[] wirepayload = Encoding.ASCII.GetBytes(payload);
                 CAARF.Send(wirepayload, wirepayload.Length, remoteAgent);
 
-                CAARF.Client.ReceiveTimeout = 3000;
+                CAARF.Client.ReceiveTimeout = 5000;
                 wirepayload = CAARF.Receive(ref remoteAgent);
                 payload = Encoding.ASCII.GetString(wirepayload, 0, wirepayload.Length);
                 string[] payloadMessage = payload.Split(delimiter);
 
-                textBoxTeste.Text = "TESTE-> R-Factor:" + payloadMessage[0] + "\t MOS:" + payloadMessage[1] + "\n\r";
-                // textBoxTeste.Text = payloadMessage[1] + Environment.NewLine;
-
+                textBoxTeste.AppendText("TESTE-> R-Factor:" + payloadMessage[0] + "\t MOS:" + payloadMessage[1] + "\n");
             }
-            catch (SocketException se)
+            catch (Exception ex)
             {
-
-                textBoxTeste.Text= se.Message;
+                textBoxTeste.Text= ex.Message;
             }
         }
     }
