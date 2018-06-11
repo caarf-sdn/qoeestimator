@@ -3,7 +3,6 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Diagnostics;
-using System.Threading;
 namespace UDP_APP
 {
     class Program
@@ -99,12 +98,12 @@ namespace UDP_APP
                 else
                 {
                     //Caso o limite de tempo seja ultrapassado
-                    Console.WriteLine("Esgotado tempo limite...");
+                    Console.WriteLine("Esgotado tempo limite.");
                 }
                 stopWatch.Reset();
             }
 
-            //Caso a quantidade de pacotes recebidos seja diferente de zero
+            //Caso a quantidade de pacotes recebidos seja maior que zero
             if(packetCount > 0) 
             {
                 if (packetCount == 1)
@@ -115,10 +114,11 @@ namespace UDP_APP
                 {
                     JITTER = sumDIFF / (packetCount - 1);
                 }
+
                 ALATENCY = sumRTT / packetCount;
                 LOSS = ((pNumber - packetCount) * 100) / pNumber;
-
                 ELATENCY = ALATENCY + JITTER * 2 + 10;
+
                 if (ELATENCY < 160)
                 {
                     R = 93.2 - (ELATENCY / 40);
@@ -127,12 +127,16 @@ namespace UDP_APP
                 {
                     R = 93.2 - (ELATENCY - 120) / 10;
                 }
-                //R = R - ((LOSS/100) * 2.5);
+
                 R = R - (LOSS * 2.5);
 
                 if (R < 0)
                 {
                     MOS = 1;
+                }
+                else if (R > 100)
+                {
+                    MOS = 4.5;
                 }
                 else
                 {
@@ -164,7 +168,8 @@ namespace UDP_APP
             Console.WriteLine("Perda de pacotes = {0} %", LOSS);
             Console.WriteLine("Latência Efetiva = {0}", ELATENCY);
             Console.WriteLine("R-factor= {0}", R);
-            Console.WriteLine("MOS = {0}", MOS);
+            Console.WriteLine("MOS = {0}\n", MOS);
+
 
             temp.Close();
         }
@@ -189,63 +194,15 @@ namespace UDP_APP
             agent.Send(wirepayload, wirepayload.Length, remote);
         }
 
-        static void sendTEST(string[] payloadMessage, UdpClient agent, IPEndPoint remote)
-        {
-            //Resposta a mensagem TESTE baseada em entradas manuais
 
-            double JITTER;
-            double ALATENCY;
-            double LOSS;
-            double R;
-            double MOS;
-            double ELATENCY;
-
-            ALATENCY = Double.Parse(payloadMessage[1]);
-            JITTER = Double.Parse(payloadMessage[2]);
-            LOSS = Double.Parse(payloadMessage[3]);
-
-            ELATENCY = ALATENCY + JITTER * 2 + 10;
-            if (ELATENCY < 160)
-            {
-                R = 93.2 - (ELATENCY / 40);
-            }
-            else
-            {
-                R = 93.2 - (ELATENCY - 120) / 10;
-            }
-            //R = R - ((LOSS/100) * 2.5);
-            R = R - (LOSS * 2.5);
-            if (R < 0)
-            {
-                MOS = 1;
-            }
-            else
-            {
-                MOS = 1 + 0.035 * R + 0.000007 * R * (R - 60) * (100 - R);
-            }
-
-            //RESPOSTA: CAARF_RESPONSE
-            string payload = R + "|" + MOS;
-            byte[] wirepayload = Encoding.ASCII.GetBytes(payload);
-            agent.Send(wirepayload, wirepayload.Length, remote);
-
-            //CONSOLE OUTPUT
-            Console.WriteLine("Latência média = {0}", ALATENCY);
-            Console.WriteLine("Jitter = {0}", JITTER);
-            Console.WriteLine("Perda de pacotes = {0} %", LOSS);
-            Console.WriteLine("Effective latency = {0}", ELATENCY);
-            Console.WriteLine("R-factor = {0}", R);
-            Console.WriteLine("MOS = {0}", MOS);
-        }
-
-        static void Main(string[] args)
+        static void Main()
         {
             //AGENTE_UDP
             //Prototípo de agente utilizado para estimação de QOE
             try
             {
                 //Informações do host local
-                Console.WriteLine("AGENTE_UDP");
+                Console.WriteLine("AGENTE_UDP\n");
                 string hostName = Dns.GetHostName();
 
                 IPHostEntry hostInfo = Dns.GetHostEntry(hostName);
@@ -263,38 +220,61 @@ namespace UDP_APP
                 Console.WriteLine("Não foi possivel resolver o host local...");
             }
 
-            //Porta que será utilizada pelo UdpClient
-            int port_number = 5060;
-            Console.Write("PORTA: ");
-            port_number = Int32.Parse(Console.ReadLine());
+            //Endereço IP
+            IPAddress IPaddr = null;
+            bool IPisValid = false;
+            while (IPisValid == false)
+            {
+                Console.Write("IP: ");
+                IPisValid = IPAddress.TryParse(Console.ReadLine(), out IPaddr);
+                if (!IPisValid)
+                {
+                    Console.WriteLine("Erro: Endereço IP inválido.\n");
+                }
+            }
 
+            //Porta
+            UInt16 port = 5060;
+            bool isValid = false;
+            while (isValid == false)
+            {
+                Console.Write("PORTA: ");
+                isValid = UInt16.TryParse(Console.ReadLine(), out port);
+                if (!isValid)
+                {
+                    Console.WriteLine("Erro: Idealmente o numéro de porta informado deve estar no intervalo 49152 - 65535.\n");
+                }
+            }
 
-            //Instância de UdpClient que escuta na porta especificada
+            //Criação do UdpClient utilizado pelo agente
+            IPEndPoint localIPEndPoint = new IPEndPoint(IPaddr, port);
             UdpClient agent = null;
             try
             {
-                agent = new UdpClient(port_number);        
+                agent = new UdpClient(localIPEndPoint);        
 
             }
-            catch (SocketException se)
+            catch (SocketException ex)
             {
-                Console.WriteLine(se.ErrorCode + ": " + se.Message);
-                Environment.Exit(se.ErrorCode);
+                Console.WriteLine("Erro: Ocorreu um erro durante a criação do socket");
+                Console.WriteLine(ex.ErrorCode+": "+ex.Message);
+                Console.ReadLine();
+                Environment.Exit(ex.ErrorCode);
             }
-            Console.WriteLine("ESCUTANDO EM PORTA {0}...", port_number);
+            Console.WriteLine("ESCUTANDO EM {0}...", localIPEndPoint);
 
 
             //IPEndPoint que vai armazenar informações do IPEndPoint remoto passado como referencia ao metodo Receive()
             IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
-            string  payload;
-            char    delimiter = '|';
-            int     size;
-            int     qtd;
+            string        payload;
+            const char    delimiter = '|';
+            int           size;
+            int           qtd;
 
-            Random rnd = new Random();
+
             /*Loop principal - responsável pelo processamento das mensagens UDP
-            TIPOS DE MENSAGEMS: CAARF_REQUEST, AGENT_SIGNAL1, AGENT_SIGNAL2, AGENT_UDP12 e AGENT_TEST*/
+            TIPOS DE MENSAGEMS: CAARF_REQUEST, AGENT_SIGNAL1, AGENT_SIGNAL2, AGENT_UDP12*/
             while (true)
             {
                 try
@@ -308,12 +288,13 @@ namespace UDP_APP
                     {
                         case "CAARF_REQUEST":
                             //Caso receba receba uma mensagem de requisição de QOE - CAARF_REQUEST
-                            Console.WriteLine("{1} - RECEBEU REQUISICAO: {0} - {2} pacotes - {3} bytes...", remoteIPEndPoint, DateTime.Now, payloadMessage[4], payloadMessage[3]);
+                            Console.WriteLine("{1} - RECEBEU REQUISICAO: {0} - {2} pacotes - tamanho de payload {3} bytes.", remoteIPEndPoint, DateTime.Now, payloadMessage[4], payloadMessage[3]);
+                            IPEndPoint remoteAgent = new IPEndPoint(IPAddress.Parse(payloadMessage[1]), Int32.Parse(payloadMessage[2]));
+                            Console.WriteLine("AGENTE REMOTO EM: {0}", remoteAgent);
 
-                            IPEndPoint remote = new IPEndPoint(IPAddress.Parse(payloadMessage[1]),Int32.Parse(payloadMessage[2]));
                             size = Int32.Parse(payloadMessage[3]);
                             qtd = Int32.Parse(payloadMessage[4]);
-                            sendSIGNAL1(remote, agent, size, qtd, remoteIPEndPoint);
+                            sendSIGNAL1(remoteAgent, agent, size, qtd, remoteIPEndPoint);
                             break;
                         case "AGENT_SIGNAL1":
                             //Caso receba uma mensagem de sinal - AGENT_SIGNAL1
@@ -329,29 +310,18 @@ namespace UDP_APP
                             break;
                         case "AGENT_UDP12":
                             //Caso receba mensagem AGENT_UDP1 - Devolve o pacote ao agente remoto
-                            /*var r = rnd.Next(0, 100);
-                            if (r>50)
-                            {
-                                Thread.Sleep(2000);
-                            }*/
-                            agent.Send(wirePayload, wirePayload.Length, remoteIPEndPoint);                           
-                            break;
-                        case "AGENT_TEST":
-                            //Caso receba mensagem de teste com inputs manuais
-                            Console.WriteLine("{1} - RECEBEU TESTE: {0} - {2} latencia media - {3} jitter - {4} perda de pacotes...", remoteIPEndPoint, DateTime.Now, payloadMessage[1], payloadMessage[2], payloadMessage[3]);
-                            sendTEST(payloadMessage, agent, remoteIPEndPoint);
+                            agent.Send(wirePayload, wirePayload.Length, remoteIPEndPoint);
                             break;
 
                         default:
-                            Console.WriteLine("MENSAGEM EM FORMATO INCORRETO...");
+                            Console.WriteLine("Mensagem em formato incorreto.");
                             break;
                     }
 
                 }
-                catch (SocketException ex)
+                catch (Exception ex)
                 {
-
-                    Console.WriteLine(ex.ErrorCode + ": " + ex.Message);
+                    Console.WriteLine("Erro:" + ex.Message);                 
                 }
             }
         }

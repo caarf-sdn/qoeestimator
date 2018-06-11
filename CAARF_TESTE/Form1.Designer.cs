@@ -30,19 +30,19 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBoxAgentIp = new System.Windows.Forms.TextBox();
+            this.textBoxRip = new System.Windows.Forms.TextBox();
+            this.textBoxAgentPort = new System.Windows.Forms.TextBox();
+            this.textBoxRport = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.textBoxAL = new System.Windows.Forms.TextBox();
+            this.textBoxTlat = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBoxTeste = new System.Windows.Forms.TextBox();
-            this.textBoxJITTER = new System.Windows.Forms.TextBox();
-            this.textBoxLOSS = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBoxRsize = new System.Windows.Forms.TextBox();
+            this.textBoxOutput = new System.Windows.Forms.TextBox();
+            this.textBoxTjit = new System.Windows.Forms.TextBox();
+            this.textBoxTloss = new System.Windows.Forms.TextBox();
+            this.textBoxRqt = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -66,41 +66,37 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "REQUISIÇÃO_QOE: IP, porta, tamanho do payload e quantidade de pacotes.";
             // 
-            // textBox1
+            // textBoxAgentIp
             // 
-            this.textBox1.Location = new System.Drawing.Point(95, 21);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(131, 20);
-            this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "192.168.15.2";
+            this.textBoxAgentIp.Location = new System.Drawing.Point(95, 21);
+            this.textBoxAgentIp.Name = "textBoxAgentIp";
+            this.textBoxAgentIp.Size = new System.Drawing.Size(131, 20);
+            this.textBoxAgentIp.TabIndex = 2;
             // 
-            // textBox2
+            // textBoxRip
             // 
-            this.textBox2.Location = new System.Drawing.Point(26, 142);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(97, 20);
-            this.textBox2.TabIndex = 3;
-            this.textBox2.Text = "192.168.15.2";
+            this.textBoxRip.Location = new System.Drawing.Point(26, 142);
+            this.textBoxRip.Name = "textBoxRip";
+            this.textBoxRip.Size = new System.Drawing.Size(97, 20);
+            this.textBoxRip.TabIndex = 3;
             // 
-            // textBox3
+            // textBoxAgentPort
             // 
-            this.textBox3.Location = new System.Drawing.Point(232, 21);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(75, 20);
-            this.textBox3.TabIndex = 4;
-            this.textBox3.Text = "5060";
+            this.textBoxAgentPort.Location = new System.Drawing.Point(232, 21);
+            this.textBoxAgentPort.Name = "textBoxAgentPort";
+            this.textBoxAgentPort.Size = new System.Drawing.Size(75, 20);
+            this.textBoxAgentPort.TabIndex = 4;
             // 
-            // textBox4
+            // textBoxRport
             // 
-            this.textBox4.Location = new System.Drawing.Point(129, 142);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(56, 20);
-            this.textBox4.TabIndex = 5;
-            this.textBox4.Text = "5070";
+            this.textBoxRport.Location = new System.Drawing.Point(129, 142);
+            this.textBoxRport.Name = "textBoxRport";
+            this.textBoxRport.Size = new System.Drawing.Size(56, 20);
+            this.textBoxRport.TabIndex = 5;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(362, 140);
+            this.button1.Location = new System.Drawing.Point(352, 142);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 6;
@@ -108,12 +104,12 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // textBoxAL
+            // textBoxTlat
             // 
-            this.textBoxAL.Location = new System.Drawing.Point(26, 217);
-            this.textBoxAL.Name = "textBoxAL";
-            this.textBoxAL.Size = new System.Drawing.Size(84, 20);
-            this.textBoxAL.TabIndex = 7;
+            this.textBoxTlat.Location = new System.Drawing.Point(26, 217);
+            this.textBoxTlat.Name = "textBoxTlat";
+            this.textBoxTlat.Size = new System.Drawing.Size(78, 20);
+            this.textBoxTlat.TabIndex = 7;
             // 
             // label3
             // 
@@ -121,77 +117,79 @@
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(23, 191);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(243, 13);
+            this.label3.Size = new System.Drawing.Size(267, 13);
             this.label3.TabIndex = 8;
-            this.label3.Text = "TESTE: Latência média, jitter e perda de pacotes.";
+            this.label3.Text = "TESTE: Latência média, jitter e porcentagem de perda.";
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(362, 215);
+            this.button2.Location = new System.Drawing.Point(322, 215);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(115, 23);
             this.button2.TabIndex = 9;
-            this.button2.Text = "TESTE";
+            this.button2.Text = "ESTIMAR QOE";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // textBox6
+            // textBoxRsize
             // 
-            this.textBox6.Location = new System.Drawing.Point(191, 143);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(56, 20);
-            this.textBox6.TabIndex = 10;
+            this.textBoxRsize.Location = new System.Drawing.Point(191, 143);
+            this.textBoxRsize.Name = "textBoxRsize";
+            this.textBoxRsize.Size = new System.Drawing.Size(56, 20);
+            this.textBoxRsize.TabIndex = 10;
             // 
-            // textBoxTeste
+            // textBoxOutput
             // 
-            this.textBoxTeste.Location = new System.Drawing.Point(26, 260);
-            this.textBoxTeste.Multiline = true;
-            this.textBoxTeste.Name = "textBoxTeste";
-            this.textBoxTeste.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxTeste.Size = new System.Drawing.Size(411, 113);
-            this.textBoxTeste.TabIndex = 11;
+            this.textBoxOutput.Location = new System.Drawing.Point(26, 260);
+            this.textBoxOutput.Multiline = true;
+            this.textBoxOutput.Name = "textBoxOutput";
+            this.textBoxOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxOutput.Size = new System.Drawing.Size(411, 113);
+            this.textBoxOutput.TabIndex = 11;
             // 
-            // textBoxJITTER
+            // textBoxTjit
             // 
-            this.textBoxJITTER.Location = new System.Drawing.Point(126, 217);
-            this.textBoxJITTER.Name = "textBoxJITTER";
-            this.textBoxJITTER.Size = new System.Drawing.Size(100, 20);
-            this.textBoxJITTER.TabIndex = 12;
+            this.textBoxTjit.Location = new System.Drawing.Point(116, 217);
+            this.textBoxTjit.Name = "textBoxTjit";
+            this.textBoxTjit.Size = new System.Drawing.Size(84, 20);
+            this.textBoxTjit.TabIndex = 12;
             // 
-            // textBoxLOSS
+            // textBoxTloss
             // 
-            this.textBoxLOSS.Location = new System.Drawing.Point(241, 217);
-            this.textBoxLOSS.Name = "textBoxLOSS";
-            this.textBoxLOSS.Size = new System.Drawing.Size(100, 20);
-            this.textBoxLOSS.TabIndex = 13;
+            this.textBoxTloss.Location = new System.Drawing.Point(206, 217);
+            this.textBoxTloss.Name = "textBoxTloss";
+            this.textBoxTloss.Size = new System.Drawing.Size(85, 20);
+            this.textBoxTloss.TabIndex = 13;
             // 
-            // textBox5
+            // textBoxRqt
             // 
-            this.textBox5.Location = new System.Drawing.Point(253, 143);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(73, 20);
-            this.textBox5.TabIndex = 14;
+            this.textBoxRqt.Location = new System.Drawing.Point(253, 143);
+            this.textBoxRqt.Name = "textBoxRqt";
+            this.textBoxRqt.Size = new System.Drawing.Size(73, 20);
+            this.textBoxRqt.TabIndex = 14;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(457, 412);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.textBoxLOSS);
-            this.Controls.Add(this.textBoxJITTER);
-            this.Controls.Add(this.textBoxTeste);
-            this.Controls.Add(this.textBox6);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(459, 411);
+            this.Controls.Add(this.textBoxRqt);
+            this.Controls.Add(this.textBoxTloss);
+            this.Controls.Add(this.textBoxTjit);
+            this.Controls.Add(this.textBoxOutput);
+            this.Controls.Add(this.textBoxRsize);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBoxAL);
+            this.Controls.Add(this.textBoxTlat);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textBoxRport);
+            this.Controls.Add(this.textBoxAgentPort);
+            this.Controls.Add(this.textBoxRip);
+            this.Controls.Add(this.textBoxAgentIp);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "DEBUG";
             this.ResumeLayout(false);
@@ -203,19 +201,19 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBoxAgentIp;
+        private System.Windows.Forms.TextBox textBoxRip;
+        private System.Windows.Forms.TextBox textBoxAgentPort;
+        private System.Windows.Forms.TextBox textBoxRport;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBoxAL;
+        private System.Windows.Forms.TextBox textBoxTlat;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBoxTeste;
-        private System.Windows.Forms.TextBox textBoxJITTER;
-        private System.Windows.Forms.TextBox textBoxLOSS;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textBoxRsize;
+        private System.Windows.Forms.TextBox textBoxOutput;
+        private System.Windows.Forms.TextBox textBoxTjit;
+        private System.Windows.Forms.TextBox textBoxTloss;
+        private System.Windows.Forms.TextBox textBoxRqt;
     }
 }
 
